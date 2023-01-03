@@ -1,0 +1,22 @@
+{
+  "name": "libron-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/champierre/libron-api.git"
+  },
+  "author": "champierre",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/champierre/libron-api/issues"
+  },
+  "homepage": "https://github.com/champierre/libron-api#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
+}
