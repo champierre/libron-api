@@ -14,7 +14,19 @@ const text = await response.text();
 const match = text.match(/^loadcity\((.*)\);$/);
 const cities = JSON.parse(match[1]);
 
+// 重複を排除 https://ginpen.com/2018/12/18/array-unique/
+const uniqueArray = (array) => {
+  return array.reduce((a, v) => {
+    if (!a.some((e) => e.name === v.name && e.value === v.value)) {
+      a.push(v);
+    }
+    return a;
+  }, []);
+}
+
 for (const prefecture in cities) {
+  const largeArray = libraries.filter(library => library.pref === prefecture && library.category === 'LARGE').map(library => { return { name: library.systemname, value: library.systemid }});
+  cities[prefecture]['図書館(広域)'] = uniqueArray(largeArray);
   for (const initialHiragana in cities[prefecture]) {
     const cityNames = cities[prefecture][initialHiragana];
     const array = cityNames.map((city) => {
@@ -26,12 +38,9 @@ for (const prefecture in cities) {
     cities[prefecture][initialHiragana] = array.filter((item) => item);
   }
   const univArray = libraries.filter(library => library.pref === prefecture && library.category === 'UNIV').map(library => { return { name: library.systemname, value: library.systemid }});
-  cities[prefecture]['図書館(大学)'] = univArray.reduce((array, v) => {
-    if (!array.some((e) => e.name === v.name && e.value === v.value)) {
-      array.push(v);
-    }
-    return array;
-  }, []); // 重複を排除 https://ginpen.com/2018/12/18/array-unique/
+  cities[prefecture]['図書館(大学)'] = uniqueArray(univArray);
+  const otherArray = libraries.filter(library => library.pref === prefecture && (library.category === 'SPECIAL' || library.category === 'BM')).map(library => { return { name: library.systemname, value: library.systemid }});
+  cities[prefecture]['移動・その他'] = uniqueArray(otherArray);
 }
 
 try {
