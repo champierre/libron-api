@@ -18,13 +18,20 @@ for (const prefecture in cities) {
   for (const initialHiragana in cities[prefecture]) {
     const cityNames = cities[prefecture][initialHiragana];
     const array = cityNames.map((city) => {
-      const targetLibrary = libraries.find((library) => library.systemname === `${prefecture}${city}` && (library.category === 'MEDIUM' || library.category === 'SMALL'));
+      const targetLibrary = libraries.find(library => library.systemname === `${prefecture}${city}` && (library.category === 'MEDIUM' || library.category === 'SMALL'));
       if (targetLibrary) {
         return { name: city, value: targetLibrary.systemid };
       }
     });
     cities[prefecture][initialHiragana] = array.filter((item) => item);
   }
+  const univArray = libraries.filter(library => library.pref === prefecture && library.category === 'UNIV').map(library => { return { name: library.systemname, value: library.systemid }});
+  cities[prefecture]['図書館(大学)'] = univArray.reduce((array, v) => {
+    if (!array.some((e) => e.name === v.name && e.value === v.value)) {
+      array.push(v);
+    }
+    return array;
+  }, []); // 重複を排除 https://ginpen.com/2018/12/18/array-unique/
 }
 
 try {
