@@ -25,8 +25,6 @@ const uniqueArray = (array) => {
 }
 
 for (const prefecture in cities) {
-  const largeArray = libraries.filter(library => library.pref === prefecture && library.category === 'LARGE').map(library => { return { name: library.systemname, value: library.systemid }});
-  cities[prefecture]['図書館(広域)'] = uniqueArray(largeArray);
   for (const initialHiragana in cities[prefecture]) {
     const cityNames = cities[prefecture][initialHiragana];
     const array = cityNames.map((city) => {
@@ -37,6 +35,8 @@ for (const prefecture in cities) {
     });
     cities[prefecture][initialHiragana] = array.filter((item) => item);
   }
+  const largeArray = libraries.filter(library => library.pref === prefecture && library.category === 'LARGE').map(library => { return { name: library.systemname, value: library.systemid }});
+  cities[prefecture]['図書館(広域)'] = uniqueArray(largeArray);
   const univArray = libraries.filter(library => library.pref === prefecture && library.category === 'UNIV').map(library => { return { name: library.systemname, value: library.systemid }});
   cities[prefecture]['図書館(大学)'] = uniqueArray(univArray);
   const otherArray = libraries.filter(library => library.pref === prefecture && (library.category === 'SPECIAL' || library.category === 'BM')).map(library => { return { name: library.systemname, value: library.systemid }});
