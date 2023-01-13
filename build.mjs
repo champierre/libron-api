@@ -29,9 +29,7 @@ for (const prefecture in cities) {
     const cityNames = cities[prefecture][initialHiragana];
     const array = cityNames.map((city) => {
       const targetLibrary = libraries.find(library => library.systemname === `${prefecture}${city}` && (library.category === 'MEDIUM' || library.category === 'SMALL'));
-      if (targetLibrary) {
-        return { name: city, value: targetLibrary.systemid };
-      }
+      return { name: city, value: targetLibrary?.systemid };
     });
     cities[prefecture][initialHiragana] = array.filter((item) => item);
   }
